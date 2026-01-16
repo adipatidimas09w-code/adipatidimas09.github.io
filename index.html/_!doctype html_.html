@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>For Thom 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap');
+
+body {
+    margin:0;
+    font-family:'Nunito',sans-serif;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#ff4f9a;
+    overflow:hidden;
+    background: linear-gradient(-45deg,#ffd6e8,#d6f0ff,#ffe9f3,#d6fff7);
+    background-size:400% 400%;
+    animation:gradient 12s ease infinite;
+}
+
+@keyframes gradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.card{
+    background:white;
+    padding:30px 25px;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    max-width:320px;
+    z-index:2;
+}
+
+.hidden{display:none;}
+
+button{
+    background:#ff8fc4;
+    border:none;
+    padding:10px 20px;
+    border-radius:20px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin:8px;
+    transition:0.2s;
+}
+button:hover{
+    background:#ff5aa5;
+    transform:scale(1.05);
+}
+
+.cat{
+    font-size:90px;
+    display:inline-block;
+    animation:bounceGlow 1s infinite;
+}
+
+@keyframes bounceGlow{
+    0%,100%{transform:translateY(0); filter:drop-shadow(0 0 0px pink);}
+    50%{transform:translateY(-20px); filter:drop-shadow(0 0 15px pink);}
+}
+
+.sparkle{
+    position:absolute;
+    font-size:18px;
+    animation:floatUp 6s linear infinite;
+    opacity:0.8;
+}
+
+@keyframes floatUp{
+    0%{transform:translateY(100vh);opacity:0;}
+    20%{opacity:1;}
+    100%{transform:translateY(-10vh);opacity:0;}
+}
+
+/* click burst */
+.burst{
+    position:absolute;
+    font-size:20px;
+    animation:burst 0.8s ease-out forwards;
+    pointer-events:none;
+}
+@keyframes burst{
+    0%{transform:scale(0);opacity:1;}
+    100%{transform:scale(3);opacity:0;}
+}
+
+.loading{
+    font-size:20px;
+    animation:pulse 1s infinite;
+}
+@keyframes pulse{
+    0%,100%{opacity:0.3;}
+    50%{opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<!-- floating background sparkles -->
+<div class="sparkle" style="left:15%;animation-delay:0s;">✨</div>
+<div class="sparkle" style="left:35%;animation-delay:2s;">💖</div>
+<div class="sparkle" style="left:55%;animation-delay:4s;">🌸</div>
+<div class="sparkle" style="left:75%;animation-delay:1s;">💕</div>
+<div class="sparkle" style="left:90%;animation-delay:3s;">⭐</div>
+
+<!-- click sound -->
+<audio id="clickSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-bubble-pop-up-alert-notification-2357.mp3">
+</audio>
+
+<div class="card" id="page0">
+  <div class="loading">かわいいメッセージ準備中… 💌</div>
+</div>
+
+<div class="card hidden" id="page1">
+  <h2>ねえねえ Thom ✨</h2>
+  <p>ひみつのメッセージがあるよ</p>
+  <button onclick="openPage(event)">open 💖</button>
+</div>
+
+<div class="card hidden" id="page2">
+  <div class="cat">🐱</div>
+  <h3>トム、こんにちは！</h3>
+  <p>今日はちゃんとごはん食べた？</p>
+  <button onclick="answer('yes',event)">食べたよ 🍱</button>
+  <button onclick="answer('no',event)">まだ 😴</button>
+</div>
+
+<div class="card hidden" id="page3">
+  <h3 id="response"></h3>
+  <p style="margin-top:15px;">いつか… 一緒にごはん食べようね 🍜</p>
+</div>
+
+<script>
+const page0=document.getElementById("page0");
+const page1=document.getElementById("page1");
+const page2=document.getElementById("page2");
+const page3=document.getElementById("page3");
+const clickSound=document.getElementById("clickSound");
+
+setTimeout(()=>{
+  page0.classList.add("hidden");
+  page1.classList.remove("hidden");
+},1500);
+
+function playClick(){
+  clickSound.currentTime=0;
+  clickSound.play();
+}
+
+function burstEffect(x,y){
+  const b=document.createElement("div");
+  b.className="burst";
+  b.style.left=x+"px";
+  b.style.top=y+"px";
+  b.innerText="💖";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),800);
+}
+
+function openPage(e){
+  playClick();
+  burstEffect(e.clientX,e.clientY);
+  page1.classList.add("hidden");
+  page2.classList.remove("hidden");
+}
+
+function answer(choice,e){
+  playClick();
+  burstEffect(e.clientX,e.clientY);
+  page2.classList.add("hidden");
+  page3.classList.remove("hidden");
+  const text=document.getElementById("response");
+  text.innerHTML = (choice==="yes")
+   ? "えらい〜！トムはいい子だね ✨😆"
+   : "ちゃんと食べなきゃだめだよ 😤💖";
+}
+</script>
+
+</body>
+</html>
